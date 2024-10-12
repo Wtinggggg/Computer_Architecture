@@ -1,7 +1,12 @@
 .data
-nums:     .word 5, 4, -1, 7, 8
-size:     .word 5
-str1:     .string "Maximum subarray sum is "
+nums1:     .word -2, 1, -3, 4, -1, 2, 1, -5, 4
+size1:     .word 9
+nums2:     .word 1
+size2:     .word 1
+nums3:     .word 5, 4, -1, 7, 8
+size3:     .word 5
+str1:      .string "Maximum subarray sum of nums is "
+str2:      .string "\n" 
 
 .text
 .globl main
@@ -10,12 +15,42 @@ main:
     sw ra, 12(sp)
     sw s0, 8(sp)
 
-    la s0, nums         # load nums address
+    la s0, nums1         # load nums address
 
-    la t0, size         # numsSize 
+    la t0, size1         # numsSize 
     lw a1, 0(t0)
 
-    la a0, nums         
+    la a0, nums1         
+
+    call maxSubArray
+
+    lw ra, 12(sp)
+    lw s0, 8(sp)
+    addi sp, sp, 16
+
+    jal ra, printResult
+
+    la s0, nums2         # load nums address
+
+    la t0, size2         # numsSize 
+    lw a1, 0(t0)
+
+    la a0, nums2         
+
+    call maxSubArray
+
+    lw ra, 12(sp)
+    lw s0, 8(sp)
+    addi sp, sp, 16
+
+    jal ra, printResult
+
+    la s0, nums3         # load nums address
+
+    la t0, size3         # numsSize 
+    lw a1, 0(t0)
+
+    la a0, nums3         
 
     call maxSubArray
 
@@ -78,5 +113,9 @@ printResult:
     
     mv a0, t0
     li a7, 1            
+    ecall
+
+    la a0, str2
+    li a7, 4            
     ecall
     jr ra
